@@ -1,9 +1,20 @@
 package com.example.demo.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Table(name = "proprietaire")
 public class Proprietaire {
 
+  @Id
+  @Column(name = "id")
   private Long id;
+
+  @Column(name = "prenom")
   private String prenom;
+
+  @Column(name = "nom")
   private String nom;
 
   public Proprietaire() {}

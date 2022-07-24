@@ -42,4 +42,10 @@ public class ProprietaireController {
         .header(HttpHeaders.LOCATION, uriComponents.toUriString())
         .build();
   }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity supprimerProprietaire(@PathVariable Long id) throws Exception {
+    proprietaireService.deleteProprietaireById(id);
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
 }

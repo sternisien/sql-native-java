@@ -18,6 +18,7 @@ public class ConnectionManager {
   public static Connection getInstance() throws SQLException {
     if (Objects.isNull(con) || con.isClosed()) {
       con = initConnection();
+      con.setAutoCommit(false);
     }
 
     return con;

@@ -1,8 +1,11 @@
 package com.example.demo.dto;
 
 public class ProprietaireDto {
+
   private Long id;
+
   private String prenom;
+
   private String nom;
 
   public ProprietaireDto() {}

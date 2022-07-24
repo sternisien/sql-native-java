@@ -5,6 +5,7 @@ import com.example.demo.utils.ConnectionManager;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class ProprietaireDao {
         collectionProprietaire.add(p);
       }
     } catch (Exception e) {
-      throw new Exception("erreur lors de l'insertion de la donnée");
+      throw new Exception("erreur lors de la récupération des données");
     } finally {
       statement.close();
       connection.close();
@@ -71,13 +72,13 @@ public class ProprietaireDao {
             + "','"
             + proprietaire.getPrenom()
             + "')";
-    Statement statement = connection.createStatement();
+    PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
     try {
-      statement.execute(sql);
+      statement.execute();
       connection.commit();
       ResultSet resultSet = statement.getGeneratedKeys();
       if (resultSet.next()) {
-        id = resultSet.getLong(0);
+        id = resultSet.getLong("id");
       }
       connection.endRequest();
     } catch (Exception e) {
@@ -89,5 +90,24 @@ public class ProprietaireDao {
     }
 
     return id;
+  }
+
+  public void deleteProprietaireById(long id) throws Exception {
+    Connection connection = ConnectionManager.getInstance();
+    Proprietaire proprietaire = null;
+    String sql = "DELETE FROM proprietaire WHERE id=" + id;
+    Statement statement = connection.createStatement();
+    try {
+      connection.beginRequest();
+      statement.execute(sql);
+      connection.commit();
+      connection.endRequest();
+    } catch (Exception e) {
+      connection.rollback();
+      throw new Exception("erreur lors de l'insertion de la donnée");
+    } finally {
+      statement.close();
+      connection.close();
+    }
   }
 }
